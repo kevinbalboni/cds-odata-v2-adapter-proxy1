@@ -1,0 +1,3 @@
+ID;status;name;description;createdBy;createdAt;modifiedBy;modifiedAt
+246fe368-2040-11eb-adc1-0242ac120002;draft;it.alice.demo;Demo Package;admin;2021-01-26 11:00:00.000000000;;
+246fe368-2040-11eb-adc1-0242ac120002;released;it.alice.demo;Demo Package;admin;2021-01-26 11:00:00.000000000;;

@@ -1,0 +1,35 @@
+{
+  "name": "cap-assert-check",
+  "version": "1.0.0",
+  "description": "A simple CAP project.",
+  "repository": "<Add your repository here>",
+  "license": "UNLICENSED",
+  "private": true,
+  "dependencies": {
+    "@sap/cds": "^4",
+    "express": "^4",
+    "uuid": "^8.3.2"
+  },
+  "devDependencies": {
+    "sqlite3": "5.0.0"
+  },
+  "scripts": {
+    "start": "cds run",
+    "deploy": "cds deploy --to sqlite:assertCheck.db"
+  },
+  "cds": {
+    "hana": {
+      "deploy-format": "hdbtable",
+      "syntax": "hdi"
+    },
+    "requires": {
+      "db": {
+        "kind": "sqlite",
+        "model": "*",
+        "credentials": {
+          "database": "assertCheck.db"
+        }
+      }
+    }
+  }
+}

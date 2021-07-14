@@ -1,0 +1,130 @@
+@service-url = http://localhost:4004
+@assertCheck = {{service-url}}/assert-check
+
+
+#### ------------------------------------------------------------------------
+# READ ALL Packages  
+# Expected response HTTP/1.1 200 OK
+### -----------------------------------------------------------------------
+GET {{assertCheck}}/Packages  
+Accept: application/json
+
+#### ------------------------------------------------------------------------
+# CREATE Packages from Odata
+# Expected response HTTP/1.1 201 OK 
+# Received response HTTP/1.1 201 OK 
+### -----------------------------------------------------------------------
+POST {{assertCheck}}/Packages
+Content-Type: application/json
+
+{
+    "ID": "e95fee89-4cb6-4be2-afa4-c36670a5540e",
+    "status": "draft",
+    "name": "AssertTest",
+    "description": "test from Odata about assert"
+}
+
+#### ------------------------------------------------------------------------
+# READ ALL Packages  
+# Expected response HTTP/1.1 200 OK
+### -----------------------------------------------------------------------
+GET {{assertCheck}}/Packages(ID=e95fee89-4cb6-4be2-afa4-c36670a5540e,status='draft')
+Accept: application/json
+
+#### ------------------------------------------------------------------------
+# CREATE Packages from Odata
+# Received/Expected response HTTP/1.1 400 - Value is not in specified format
+### -----------------------------------------------------------------------
+POST {{assertCheck}}/Packages
+Content-Type: application/json
+
+{
+    "ID": "e95fee89-4cb6-4be2-afa4-c36670a5540e",
+    "status": "released",
+    "name": "Assert-Test",
+    "description": "test from Odata about assert"
+}
+
+#### ------------------------------------------------------------------------
+# CREATE Packages from Odata
+# Received/Expected response HTTP/1.1 400 - Value is invalid according to enum declaration
+### -----------------------------------------------------------------------
+POST {{assertCheck}}/Packages
+Content-Type: application/json
+
+{
+    "ID": "e95fee89-4cb6-4be2-afa4-c36670a5540e",
+    "status": "testStatus",
+    "name": "AssertTest",
+    "description": "test from Odata about assert"
+}
+
+#### ------------------------------------------------------------------------
+# CREATE Packages with CDS.RUN
+# Received response HTTP/1.1 200 - insert done without error. @assert.format not checked
+# Expected response HTTP/1.1 400 - Value is not in specified format
+### -----------------------------------------------------------------------
+POST {{assertCheck}}/Packages(ID=e95fee89-4cb6-4be2-afa4-c36670a5540e,status='draft')/AssertCheckService.actionAssertCheckCreate
+Content-Type: application/json
+service: CDS
+
+#### ------------------------------------------------------------------------
+# CREATE Packages with THIS.RUN
+# Received/Expected response HTTP/1.1 400 - Value is not in specified format
+### -----------------------------------------------------------------------
+POST {{assertCheck}}/Packages(ID=e95fee89-4cb6-4be2-afa4-c36670a5540e,status='draft')/AssertCheckService.actionAssertCheckCreate
+Content-Type: application/json
+service: THIS
+
+#### ------------------------------------------------------------------------
+# UPDATE Packages with CDS.RUN
+# Received  response HTTP/1.1 200 - record in Packages table doesn't exist, assert not checked. No exception but variable valorized with 0 (Partially wrong behaviour)
+# Expected  response HTTP/1.1 400 - maybe error about assert
+### -----------------------------------------------------------------------
+POST {{assertCheck}}/Packages(ID=e95fee89-4cb6-4be2-afa4-c36670a5540e,status='draft')/AssertCheckService.actionAssertCheckUpdate
+Content-Type: application/json
+service: CDS_ASSERT
+
+#### ------------------------------------------------------------------------
+# UPDATE Packages with CDS.RUN
+# Received/Expected  response HTTP/1.1 200 - record in Packages table doesn't exist, assert not checked. No exception but variable valorized with 0
+### -----------------------------------------------------------------------
+POST {{assertCheck}}/Packages(ID=e95fee89-4cb6-4be2-afa4-c36670a5540e,status='draft')/AssertCheckService.actionAssertCheckUpdate
+Content-Type: application/json
+service: CDS_UPDATE
+
+#### ------------------------------------------------------------------------
+# UPDATE Packages with CDS.RUN
+# Received  response HTTP/1.1 200 - record in Packages table exist. No exception and record is updated with wrong value
+# Expected  response HTTP/1.1 400 - Value is not in specified format
+### -----------------------------------------------------------------------
+POST {{assertCheck}}/Packages(ID=e95fee89-4cb6-4be2-afa4-c36670a5540e,status='draft')/AssertCheckService.actionAssertCheckUpdate
+Content-Type: application/json
+service: CDS_ASSUPD
+
+#### ------------------------------------------------------------------------
+# UPDATE Packages with THIS.RUN
+# Received/Expected response HTTP/1.1 400 - Multiple errors occurred:
+#                                           1. Value is invalid according to enum declaration
+#                                           2. Value is not in specified format
+### -----------------------------------------------------------------------
+POST {{assertCheck}}/Packages(ID=e95fee89-4cb6-4be2-afa4-c36670a5540e,status='draft')/AssertCheckService.actionAssertCheckUpdate
+Content-Type: application/json
+service: THIS_ASSERT
+
+#### ------------------------------------------------------------------------
+# UPDATE Packages with THIS.RUN
+# Received response HTTP/1.1 404 Not Found
+# Expected response HTTP/1.1 200 - record in Packages table doesn't exist. No exception but variable valorized with 0
+### -----------------------------------------------------------------------
+POST {{assertCheck}}/Packages(ID=e95fee89-4cb6-4be2-afa4-c36670a5540e,status='draft')/AssertCheckService.actionAssertCheckUpdate
+Content-Type: application/json
+service: THIS_UPDATE
+
+#### ------------------------------------------------------------------------
+# UPDATE Packages with THIS.RUN
+# Received/Expected response HTTP/1.1 400 Value is not in specified format
+### -----------------------------------------------------------------------
+POST {{assertCheck}}/Packages(ID=e95fee89-4cb6-4be2-afa4-c36670a5540e,status='draft')/AssertCheckService.actionAssertCheckUpdate
+Content-Type: application/json
+service: THIS_ASSUPD
