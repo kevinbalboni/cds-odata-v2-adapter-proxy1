@@ -143,7 +143,49 @@ async function _actionAssertCheckUpdate(req) {
   return result;
 }
 
+async function _actionAssertCheckUnique(req) {
+  const txCds = cds.transaction(req);
+  const txThis = this.transaction(req);
+
+  const { Packages } = cds.entities("assert.check");
+  var result = "";
+  var dbChange;
+
+  try {
+    if (req.headers.service === "CDS_UNIQUE") {
+      // Assert is ignored
+      dbChange = await txCds.run(
+        INSERT.into(Packages).entries({
+          ID: uuidv4(),
+          status: "draft",
+          name: "AssertTest",
+          description: "Insert new Packages from backend",
+        })
+      );
+
+      result = "Inserted on the first lap, the error was intercepted from the second lap onwards";
+    } else if (req.headers.service === "THIS_UNIQUE") {
+      // Assert is correctly intercepted (correct behaviour)
+      dbChange = await txThis.run(
+        INSERT.into(Packages).entries({
+          ID: uuidv4(),
+          status: "draft",
+          name: "AssertTest",
+          description: "Insert new Packages from backend",
+        })
+      );
+
+      result = "Inserted on the first lap, the error was intercepted from the second lap onwards";
+    }
+  } catch (err) {
+    req.reject(err);
+  }
+
+  return result;
+}
+
 module.exports = cds.service.impl(async function () {
   this.on("actionAssertCheckCreate", _actionAssertCheckCreate);
   this.on("actionAssertCheckUpdate", _actionAssertCheckUpdate);
+  this.on("actionAssertCheckUnique", _actionAssertCheckUnique);  
 });
