@@ -6,12 +6,12 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@sap/cds": "^4",
+    "@sap/cds": "5.0.6",
     "express": "^4",
     "uuid": "^8.3.2"
   },
   "devDependencies": {
-    "sqlite3": "5.0.0"
+    "sqlite3": "^5.0.2"
   },
   "scripts": {
     "start": "cds run",
