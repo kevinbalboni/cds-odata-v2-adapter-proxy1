@@ -15,9 +15,8 @@ File or Folder | Purpose
 
 ## Next Steps
 
-- Open a new terminal and run `cds build` and `cds deploy --to sqlite:assertCheck.db`
+- Open a new terminal and run `npm install` and `cds build`
 - Run application with cds `cds watch`   
-- (in VS Code simply choose _**Terminal** > Run Task > cds watch_)
 
 ## Learn More
 

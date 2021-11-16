@@ -1,0 +1,38 @@
+@service-url = http://localhost:4004
+@odatav2 = {{service-url}}/v2/odata/MyService
+
+#### ------------------------------------------------------------------------
+# Read Large String
+# Expected response HTTP/1.1 201 OK
+#{
+#  "d": {
+#    "value": "Hello",
+#    "__metadata": {}
+#  }
+#}
+#
+## Received response HTTP/1.1 201 OK 
+#{
+#  "d": {
+#    "value": "Hello",
+#    "__metadata": {}
+#  }
+#}
+### -----------------------------------------------------------------------
+POST {{odatav2}}/readPackages
+Content-Type: application/json
+
+#### ------------------------------------------------------------------------
+# Read String
+# Expected response HTTP/1.1 201 OK
+#{
+#  "d": "Hello"
+#}
+##
+# Received response HTTP/1.1 201 OK 
+#{
+#  "d": "Hello"
+#}
+### -----------------------------------------------------------------------
+POST {{odatav2}}/readPackages2
+Content-Type: application/json
