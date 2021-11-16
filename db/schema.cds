@@ -1,4 +1,5 @@
-namespace assert.check;
+/* NOT NEEDED FOR THIS DEMO 
+ namespace assert.check;
 
 using {
     cuid,
@@ -21,4 +22,4 @@ entity Packages : cuid, managed {
         name         : String(50) not null @assert.format: '^[a-zA-Z0-9.]+$';
         description  : String(100);
 };
-
+ */
